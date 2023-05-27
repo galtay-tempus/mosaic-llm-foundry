@@ -138,7 +138,7 @@ class StreamingTextDataset(StreamingDataset):
             raise RuntimeError(
                 'If tokenizing on-the-fly, tokenizer must have a pad_token_id')
 
-        return self.tokenizer(text_sample['text'],
+        return self.tokenizer(text_sample['content_normed'],
                               truncation=True,
                               padding='max_length',
                               max_length=self.max_seq_len)
@@ -151,7 +151,7 @@ class StreamingTextDataset(StreamingDataset):
     # How to process a sample
     def __getitem__(self, idx: int):
         sample = super().__getitem__(idx)
-        if 'text' in sample:
+        if 'content_normed' in sample:
             token_sample = self._tokenize(sample)
         elif 'tokens' in sample:
             token_sample = self._read_binary_tokenized_sample(sample)
