@@ -4,15 +4,15 @@ max_seq_len: 2048
 global_seed: 17
 
 # Run Name
-run_name: ktpt-1b
+run_name: ktpt-7b
 
 # Model
 model:
   name: mpt_causal_lm
   init_device: meta
-  d_model: 2048
-  n_heads: 16
-  n_layers: 24
+  d_model: 4096
+  n_heads: 32
+  n_layers: 32
   expansion_ratio: 4
   max_seq_len: ${max_seq_len}
   vocab_size: 65536
@@ -58,7 +58,7 @@ scheduler:
 
 optimizer:
   name: decoupled_adamw
-  lr: 2.0e-4
+  lr: 1.2e-4
   betas:
   - 0.9
   - 0.95
@@ -70,16 +70,16 @@ algorithms:
     clipping_type: norm
     clipping_threshold: 1.0
 
-max_duration: 24800ba # ~26B tokens 
+max_duration: 63900ba # ~26B tokens 
 eval_interval: 2ep
 eval_first: false
 eval_subset_num_batches: 32
-global_train_batch_size: 512
+global_train_batch_size: 1024
 
 # System
 seed: ${global_seed}
-device_eval_batch_size: 8
-device_train_microbatch_size: 8
+device_eval_batch_size: 4
+device_train_microbatch_size: 4
 # device_train_microbatch_size: auto
 precision: amp_bf16
 
@@ -109,8 +109,8 @@ loggers:
   tensorboard: {}
 
 # Checkpoint to local filesystem or remote object store
-save_interval: 1000ba
-save_num_checkpoints_to_keep: 1  # Important, this cleans up checkpoints saved to DISK
+save_interval: 512ba
+save_num_checkpoints_to_keep: 3  # Important, this cleans up checkpoints saved to DISK
 save_folder: ./{run_name}/checkpoints
 # save_folder: s3://my-bucket/my-folder/{run_name}/checkpoints
 

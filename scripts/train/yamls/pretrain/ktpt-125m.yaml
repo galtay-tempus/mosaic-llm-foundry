@@ -21,7 +21,7 @@ model:
 
 # Tokenizer
 tokenizer:
-  name: /data/tl-prd-rwde-model-dev/ktlm_tokenizers/ocr_pages_filtered_v1_0_0/hf_clones/gpt2/gpt2-v64k-pad
+  name: /data/tl-prd-rwde-model-dev/ktlm_tokenizers/ocr_pages_filtered_v1_0_0/hf_clones/EleutherAI/gpt-neox-20b/EleutherAI/gpt-neox-20b-v64k-pad
   kwargs:
     model_max_length: ${max_seq_len}
 
@@ -70,10 +70,10 @@ algorithms:
     clipping_type: norm
     clipping_threshold: 1.0
 
-max_duration: 4800ba # ~ 2.5B tokens
-eval_interval: 2ep
+max_duration: 8192ba 
+eval_interval: 1024ba
 eval_first: false
-eval_subset_num_batches: -1
+eval_subset_num_batches: 512
 global_train_batch_size: 256
 
 # System
@@ -109,11 +109,11 @@ loggers:
   tensorboard: {}
 
 # Checkpoint to local filesystem or remote object store
-save_interval: 500ba
-save_num_checkpoints_to_keep: 1  # Important, this cleans up checkpoints saved to DISK
+save_interval: 256ba
+save_num_checkpoints_to_keep: 16  # Important, this cleans up checkpoints saved to DISK
 save_folder: ./{run_name}/checkpoints
 # save_folder: s3://my-bucket/my-folder/{run_name}/checkpoints
 
 # Load from local filesystem or remote object store
-# load_path: ./gpt-125m/checkpoints/latest-rank{rank}.pt
+# load_path: /home/gabriel.altay/mosaic-llm-foundry/scripts/output/ktpt-125m/checkpoints/latest-rank0.pt
 # load_path: s3://my-bucket/my-folder/gpt-125m/checkpoints/latest-rank{rank}.pt
